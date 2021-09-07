@@ -1,0 +1,141 @@
+{% extends 'shopitapp/base.html' %}
+{% load static %}
+
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+<section>
+    <div class="search_area">
+        <h1 class="text-white mb-4 text-center"> Buy or Sell your Electronic Gadgets on Shopit.ng </h1>
+        <a href="{% url 'shopitapp:search_product' %}" class="btn btn-light btn-lg mw-25 btn-block">
+            <i class="fas fa-search"></i>
+            Search for Product</a>
+    </div>
+</section>
+
+{% include "shopitapp/leaderboard.html" %}
+
+<div class="container">
+    {% for r in results %}
+    {{ r.title }}
+    {% endfor %}
+</div>
+
+<section>
+    <div class="container">
+        <h4 class="mb-5 text-center"> Featured products</h4>
+        <div class="row g-3">
+            <!-- {% if featured_product %} -->
+            {% for fp in featured_product %}
+            <div class="col-md-3">
+                <a href="{% url 'shopitapp:product-detail' fp.product.pk %}" class="featured-product">
+                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
+                        <img src="{{ fp.product.product_image1.url }}" class="card-img-top" alt="products"
+                            style="width:286px;height:180px;">
+                        <div class="card-body">
+                            <h5 class="card-text">{{fp.product.title}}</h5>
+                            <h6 class="card-text price-color">&#8358;{{fp.product.price}}</h6>
+                            <small class="text-muted">updated on {{ fp.product.updated_on }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+            <!-- {% endif %} -->
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container my-5">
+        <h4 class="mb-5 text-center"> All products</h4>
+        <div class="row g-3">
+
+            {% for all in allproduct %}
+            <div class="col-md-3">
+                <a href="{% url 'shopitapp:product-detail' all.pk %}" class="featured-product">
+                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
+                        <img src="{{ all.product_image1.url }}" class="card-img-top" alt="products"
+                            style="width:286px;height:180px;">
+                        <div class="card-body">
+                            <h5 class="card-text">{{all.title}}</h5>
+                            <h6 class="card-text price-color">&#8358;{{all.price}}</h6>
+                            <small class="text-muted">updated on {{ all.updated_on }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+{% if is_paginated %}
+
+{% if page_obj.has_previous %}
+<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_number }}">Previous</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a class="btn btn-outline-info mb-4" href="?page={{ num }}"> {{ num }} </a>
+{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+<a class="btn btn-outline-info mb-4" href="?page={{ num }}"> {{ num }} </a>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<a class="btn btn-outline-info mb-4" href="{{ page_obj.next_page_number }}">Next </a>
+<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+{% endif %}
+
+{% endif %}
+
+
+<div class="subscribe-form">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <div class="line-dec"></div>
+                    <h1>Subscribe on SHOPIT now!</h1>
+                </div>
+            </div>
+            <div class="col-md-8 offset-md-2">
+                <div class="main-content">
+                    <p>Enter your email address to receive all news, latest addition and amazing discounts from our
+                        awesome
+                        store</p>
+                    <div class="container">
+                        <form id="subscribe" action="form" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <fieldset>
+                                        <input name="email" type="text" class="form-control" id="email"
+                                            onfocus="if(this.value == 'Your Email...') { this.value = ''; }"
+                                            onBlur="if(this.value == '') { this.value = 'Your Email...';}"
+                                            value="Your Email..." required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-5">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="button">Subscribe
+                                            Now!</button>
+                                    </fieldset>
+                                    {% for m in messages %}
+                                    <h5> {{ m }} </h5>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

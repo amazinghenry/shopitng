@@ -1,0 +1,32 @@
+{% extends 'shopitapp/base.html' %}
+{% load static %}
+
+{% block title %} All Tablets {% endblock %}
+
+{% block content %}
+
+{% include "shopitapp/leaderboard.html" %}
+<section>
+    <div class="container my-5">
+        <h4 class="mb-5 text-center"> All Tablets </h4>
+        <div class="row">
+            {% for tablet in tabletcategory %}
+            <div class="col-md-3">
+                <a href="{% url 'shopitapp:product-detail' tablet.pk %}" class="featured-product">
+                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
+                        <img src="{{ tablet.product_image1.url }}" class="card-img-top img-fluid"
+                            alt="{{ tablet.title }}" style="width:286px;height:180px;">
+                        <div class="card-body">
+                            <h5 class="card-text">{{ tablet.title }}</h5>
+                            <h6 class="card-text price-color">&#8358;{{ tablet.price }}</h6>
+                            <small class="text-muted">Last updated: {{ tablet.updated_on }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

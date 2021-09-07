@@ -1,0 +1,32 @@
+{% extends 'shopitapp/base.html' %}
+{% load static %}
+
+{% block title %} All phones {% endblock %}
+
+{% block content %}
+
+{% include "shopitapp/leaderboard.html" %}
+<section>
+    <div class="container my-5">
+        <h4 class="mb-5 text-center"> All Phones </h4>
+        <div class="row g-4">
+            {% for phone in phonecategory %}
+            <div class="col-md-3">
+                <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="featured-product">
+                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
+                        <img src="{{ phone.product_image1.url }}" class="card-img-top img-fluid" alt=""
+                            style="width:286px;height:180px;">
+                        <div class="card-body">
+                            <h5 class="card-text">{{ phone.title }}</h5>
+                            <h6 class="card-text price-color">&#8358;{{ phone.price }}</h6>
+                            <small class="text-muted">Last updated: {{ phone.updated_on }}</small>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
