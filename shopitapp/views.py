@@ -3,6 +3,7 @@ from .models import *
 from shopitapp.forms import SearchForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 # Create your views here.
 
 
@@ -11,15 +12,23 @@ def search_product(request):
     form = SearchForm
 
     results = []
+    q = None
 
     if 'q' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data['q']
 
-            results = Product.objects.filter(title__icontains=q)
+            vector = SearchVector('title', weight='B') + \
+                SearchVector('category', weight='A')
+            query = SearchQuery(q)
+            # results = Product.objects.filter(title__search=q)
+            # results = Product.objects.annotate(
+            #     search=SearchVector('title', 'category'),).filter(search=q)
+            results = Product.objects.annotate(
+                rank=SearchRank(vector, query)).order_by('-rank')
 
-    return render(request, 'shopitapp/search.html', {'form': form, 'results': results})
+    return render(request, 'shopitapp/search.html', {'form': form, 'results': results, 'q': q})
 
 # >>> This is the product details function, when the user clicks any product,
 # this function brings out the details of the clicked product, dynamically <<<

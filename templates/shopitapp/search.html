@@ -16,6 +16,14 @@
 
     <section>
         <div class="container my-5">
+            {% if q %}
+            <p>
+                {% with results.count as total_results %}
+                Found {{ total_results }} result{{ total_results|pluralize }}
+                {% endwith %}
+            </p>
+            {% endif %}
+
             <div class="row g-3">
                 {% for r in results %}
                 <div class="col-md-3">
