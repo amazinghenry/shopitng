@@ -1,3 +1,4 @@
+from re import T
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.urls import reverse
@@ -64,10 +65,6 @@ class Storage(models.Model):
         return self.storage
 
 
-class CarouselImage(models.Model):
-    carousel_image = models.ImageField(upload_to="images/")
-
-
 class Product(models.Model):
     title = models.CharField(max_length=200, null=False, db_index=True)
     slug = models.SlugField(max_length=200)
@@ -110,3 +107,12 @@ class FeaturedProduct(models.Model):
 
     def __str__(self):
         return str(self.product)
+
+
+class Leaderboard(models.Model):
+    leaderbanner1 = models.ImageField(
+        upload_to="images/leaderbanners", blank=True, null=True, default='banner_default.jpg')
+    leaderbanner2 = models.ImageField(
+        upload_to="images/leaderbanners", blank=True, null=True, default='banner_default.jpg')
+    leaderbanner3 = models.ImageField(
+        upload_to="images/leaderbanners", blank=True, null=True, default='banner_default.jpg')

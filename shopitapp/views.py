@@ -46,10 +46,9 @@ class ProductListView(ListView):
         context = super(ProductListView, self).get_context_data(**kwargs)
         context['allproduct'] = Product.objects.all().order_by('-created_on')[
             :4]
+        context['leaderbanner'] = Leaderboard.objects.all()
 
         return context
-
-    paginated_by = 4
 
 
 class ProductDetailView(DetailView):
@@ -101,12 +100,24 @@ class PhoneListView(ListView):
     template_name = 'shopitapp/all-phones.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'phonecategory'
 
+    def get_context_data(self, **kwargs):
+        context = super(PhoneListView, self).get_context_data(**kwargs)
+        context['leaderbanner'] = Leaderboard.objects.all()
+
+        return context
+
 
 class ComputerListView(ListView):
     model = Product
     queryset = Product.objects.filter(category__id=3)
     template_name = 'shopitapp/all-laptops.html'
     context_object_name = 'computercategory'
+
+    def get_context_data(self, **kwargs):
+        context = super(ComputerListView, self).get_context_data(**kwargs)
+        context['leaderbanner'] = Leaderboard.objects.all()
+
+        return context
 
 
 class TabletListView(ListView):
@@ -115,6 +126,12 @@ class TabletListView(ListView):
     template_name = 'shopitapp/all-tablets.html'
     context_object_name = 'tabletcategory'
 
+    def get_context_data(self, **kwargs):
+        context = super(TabletListView, self).get_context_data(**kwargs)
+        context['leaderbanner'] = Leaderboard.objects.all()
+
+        return context
+
 
 class TvListView(ListView):
     model = Product
@@ -122,7 +139,8 @@ class TvListView(ListView):
     template_name = 'shopitapp/all-tv.html'
     context_object_name = 'tvcategory'
 
+    def get_context_data(self, **kwargs):
+        context = super(TvListView, self).get_context_data(**kwargs)
+        context['leaderbanner'] = Leaderboard.objects.all()
 
-def carousel(request):
-    carols = CarouselImage.objects.all()
-    return render(request, 'shopitapp/details.html', {'carols': carols})
+        return context
