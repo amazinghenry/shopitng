@@ -13,11 +13,11 @@ def subscribe(request):
         send_mail('New subcription email from Shopit',
                   email,
                   settings.EMAIL_HOST_USER,
-                  ['henryadodo@zohomail.com'],
+                  ['henryadodo@gmail.com'],
                   fail_silently=False)
         Subscribers.objects.create(subscribers_email=email)
         messages.info(request, 'You have been Subscribed!')
         return redirect('/')
     else:
         messages.info(request, 'Unsuccessful')
-    return redirect('/')
+        return redirect('/')

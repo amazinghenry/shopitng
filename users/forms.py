@@ -6,19 +6,20 @@ from crispy_forms.helper import FormHelper
 
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField()
+    # email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name',
+                  'email', 'password1', 'password2', ]
 
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+    # email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', ]
+        fields = ['first_name', 'last_name', ]
 
 
 class ProfileUpdateForm(forms.ModelForm):

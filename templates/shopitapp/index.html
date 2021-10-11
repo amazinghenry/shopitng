@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %} Home Page {% endblock %}
+{% block title %} Welcome to Shopit.ng {% endblock %}
 
 {% block content %}
 
@@ -117,7 +117,7 @@
                     <div class="container">
                         <form id="subscribe" action="form" method="POST">
                             {% csrf_token %}
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-7">
                                     <fieldset>
                                         <input name="email" type="text" class="form-control" id="email"

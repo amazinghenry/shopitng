@@ -7,4 +7,4 @@ class Subscribers(models.Model):
     subscribers_email = models.EmailField()
 
     def __str__(self):
-        return self.name
+        return self.subscribers_email
