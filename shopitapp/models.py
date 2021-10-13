@@ -1,6 +1,7 @@
 from re import T
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, PROTECT
+from django.db.models.fields import BooleanField
 from django.urls import reverse
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
@@ -65,32 +66,86 @@ class Storage(models.Model):
         return self.storage
 
 
+class Display(models.Model):
+    display = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.display
+
+
+class FrontCamera(models.Model):
+    frontcamera = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.frontcamera
+
+
+class BackCamera(models.Model):
+    backcamera = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.backcamera
+
+# models for product
+
+
 class Product(models.Model):
     title = models.CharField(max_length=200, null=False, db_index=True)
+
     slug = models.SlugField(max_length=200)
+
     price = models.DecimalField(
         max_digits=10, decimal_places=0, validators=[MinValueValidator(1)])
+
     description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
-    screensize = models.ForeignKey(Screensize, on_delete=models.CASCADE)
+
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
+
+    brand = models.ForeignKey(
+        Brand, on_delete=models.PROTECT, null=True, blank=True)
+
+    condition = models.ForeignKey(
+        Condition, on_delete=models.PROTECT, null=True, blank=True)
+
+    screensize = models.ForeignKey(
+        Screensize, on_delete=models.PROTECT, null=True, blank=True)
+
     operating_system = models.ForeignKey(
-        Operating_system, on_delete=models.CASCADE, null=True)
-    color = models.ForeignKey(Color, on_delete=CASCADE)
+        Operating_system, on_delete=models.CASCADE, null=True, blank=True)
+
+    color = models.ForeignKey(Color, on_delete=PROTECT, null=True, blank=True)
+
+    frontcamera = models.ForeignKey(
+        FrontCamera, on_delete=PROTECT, null=True, blank=True)
+
+    backcamera = models.ForeignKey(
+        BackCamera, on_delete=PROTECT, null=True, blank=True)
+
+    display = models.ForeignKey(
+        Display, on_delete=PROTECT, null=True, blank=True)
+
     ram = models.ForeignKey(
-        Ram, on_delete=models.CASCADE, null=True, blank=True)
+        Ram, on_delete=models.PROTECT, null=True, blank=True)
+
     storage = models.ForeignKey(
-        Storage, on_delete=models.CASCADE, null=True, blank=True)
+        Storage, on_delete=models.PROTECT, null=True, blank=True)
+
     updated_on = models.DateTimeField(auto_now=True)
+
     created_on = models.DateTimeField(auto_now_add=True)
+
     product_image1 = models.ImageField(
         upload_to="images/", blank=True, null=True, default='default_img.jpg')
+
     product_image2 = models.ImageField(
         upload_to="images/", blank=True, null=True, default='default_img.jpg')
+
     product_image3 = models.ImageField(
         upload_to="images/", blank=True, null=True, default='default_img.jpg')
+
     agent = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    vip = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -107,6 +162,8 @@ class FeaturedProduct(models.Model):
 
     def __str__(self):
         return str(self.product)
+
+# model for leaderboard advert
 
 
 class Leaderboard(models.Model):

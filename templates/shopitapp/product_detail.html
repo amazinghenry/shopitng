@@ -54,6 +54,9 @@
                     <p>BRAND: <span class="spec"> {{ object.brand }} </span></p>
                     <p>CONDITION: <span class="spec"> {{ object.condition }} </span></p>
                     <p>SCREEN SIZE: <span class="spec"> {{ object.screensize }} </span></p>
+                    <p>DISPLAY: <span class="spec"> {{ object.display }} </span></p>
+                    <p>FRONT CAMERA: <span class="spec"> {{ object.frontcamera }} </span></p>
+                    <p>BACK CAMERA: <span class="spec"> {{ object.backcamera }} </span></p>
                     <p>OPERATING SYSTEM: <span class="spec"> {{ object.operating_system }} </span></p>
                     <p>COLOR: <span class="spec"> {{ object.color}} </span></p>
                     <p>RAM: <span class="spec"> {{ object.ram }} </span></p>
@@ -86,8 +89,8 @@
                     <img class="rounded-circle article-img img-fluid agent-image" style="width:200px; height:200px;"
                         src="{{ object.agent.profile.image.url }}">
                     <h5 class="text-capitalize">{{ object.agent.username }}</h5>
-                    <button type="button" class="btn btn-success">Contact
-                        {{ object.agent.username }}</button>
+                    <a href="{% url 'shopitapp:user-product' product.agent.username %}" class="btn btn-success">View
+                        Products by {{ object.agent.username }}</a>
                 </div>
                 <div class="advert-space my-3 d-flex flex-column justify-content-center align-items-center">
                     <img src="{% static 'shopitapp/img/side-banner-1.jpg' %}" alt="sidebanner-advert" class="img-fluid">

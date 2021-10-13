@@ -6,26 +6,34 @@
 {% block content %}
 
 {% include "shopitapp/leaderboard.html" %}
-<section>
-    <div class="container my-5">
-        <h4 class="mb-5 text-center"> All Tablets </h4>
-        <div class="row">
-            {% for tablet in tabletcategory %}
-            <div class="col-md-3">
-                <a href="{% url 'shopitapp:product-detail' tablet.pk %}" class="featured-product">
-                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
-                        <img src="{{ tablet.product_image1.url }}" class="card-img-top img-fluid"
-                            alt="{{ tablet.title }}" style="width:286px;height:180px;">
-                        <div class="card-body">
-                            <h5 class="card-text">{{ tablet.title }}</h5>
-                            <h6 class="card-text price-color">&#8358;{{ tablet.price }}</h6>
-                            <small class="text-muted">Last updated: {{ tablet.updated_on }}</small>
-                        </div>
-                    </div>
-                </a>
+
+<section class="container my-5">
+    <h4 class="mb-5 text-center"> All Tablets </h4>
+    <div class="product-container mx-auto px-0">
+        {% for tablet in tabletcategory %}
+        <div class="row g-0 mb-3">
+            <div class="col-md-4 col-4 d-flex justify-content-center">
+                <div class="product-image bg-info d-flex">
+                    <img class="" src="{{ tablet.product_image1.url }}">
+                </div>
             </div>
-            {% endfor %}
+            <div class="col-md-8 col-8 bg-light">
+                <div class="product-content">
+                    <a href="{% url 'shopitapp:product-detail' tablet.pk %}" class="product-link">
+                        <h5 class="product-tile">{{ tablet.title }}</h5>
+                    </a>
+                    <h6 class="product-price">&#8358;{{ tablet.price }}</h6>
+                    <div class="product-content-bottom">
+                        <div class="item1">
+                            <p class="location text-muted"> <i class="fal fa-map-marker-alt fa-fw"></i>Lagos, Ikeja</p>
+                        </div>
+                        <div class="item2"><small class="date-updated text-muted">Updated:
+                                {{ tablet.updated_on }}</small></div>
+                    </div>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
 </section>
 

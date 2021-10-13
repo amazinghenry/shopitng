@@ -6,6 +6,7 @@ app_name = 'shopitapp'
 
 urlpatterns = [
     path('', ProductListView.as_view(), name='index'),
+    path('user/<str:username>', UserProductListView.as_view(), name='user-product'),
     path('allphones/', PhoneListView.as_view(), name='all_phones'),
     path('alllaptops/', ComputerListView.as_view(), name='all_laptops'),
     path('alltablets/', TabletListView.as_view(), name='all_tablets'),

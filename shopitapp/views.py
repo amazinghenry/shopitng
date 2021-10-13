@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import *
 from shopitapp.forms import SearchForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 # Create your views here.
 
@@ -37,18 +38,34 @@ def search_product(request):
 class ProductListView(ListView):
     model = Product
     template_name = 'shopitapp/index.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'featured_product'
+    context_object_name = 'allproduct'
+    ordering = ['-created_on']
+    paginate_by = 5
 
     def get_queryset(self):
-        return FeaturedProduct.objects.all()
+        return Product.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
-        context['allproduct'] = Product.objects.all().order_by('-created_on')[
-            :4]
+        context['featured_product'] = FeaturedProduct.objects.all()
+    #     context['allproduct'] = Product.objects.all().order_by('-created_on')[
+    #         :]
         context['leaderbanner'] = Leaderboard.objects.all()
-
+        context['number'] = Product.objects.all().count()
         return context
+
+# user's product
+
+
+class UserProductListView(ListView):
+    model = Product
+    template_name = 'shopitapp/user_product.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'allproduct'
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Product.objects.filter(agent=user).order_by('-created_on')
 
 
 class ProductDetailView(DetailView):
@@ -58,7 +75,7 @@ class ProductDetailView(DetailView):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     fields = ['title', 'description', 'price', 'category', 'brand', 'condition',
-              'screensize', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
+              'screensize', 'display', 'frontcamera', 'backcamera', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
 
     def form_valid(self, form):
         form.instance.agent = self.request.user
@@ -68,7 +85,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     fields = ['title', 'description', 'price', 'category', 'brand', 'condition',
-              'screensize', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
+              'screensize', 'display', 'frontcamera', 'backcamera', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
 
     def form_valid(self, form):
         form.instance.agent = self.request.user

@@ -27,21 +27,27 @@
     {% endfor %}
 </div>
 
-<section>
+<section class="product-container mx-auto">
     <div class="container">
-        <h4 class="mb-5 text-center"> Featured products</h4>
+        <h4 class="mb-5 text-center"> Trending & VIP Products</h4>
         <div class="row g-3">
             <!-- {% if featured_product %} -->
             {% for fp in featured_product %}
-            <div class="col-md-3">
+            <div class="col-md-4" style="position:relative;">
                 <a href="{% url 'shopitapp:product-detail' fp.product.pk %}" class="featured-product">
-                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
+                    <div class="card mx-auto pb-2"
+                        style="width: 15rem; height: 100%; overflow:hidden; position:relative;">
                         <img src="{{ fp.product.product_image1.url }}" class="card-img-top" alt="products"
-                            style="width:286px;height:180px;">
+                            style="width:100%;height:180px; object-fit:cover;">
                         <div class="card-body">
                             <h5 class="card-text">{{fp.product.title}}</h5>
                             <h6 class="card-text price-color">&#8358;{{fp.product.price}}</h6>
-                            <small class="text-muted">updated on {{ fp.product.updated_on }}</small>
+                            <small class="text-muted" style="position:absolute; bottom: 3px;">updated on
+                                {{ fp.product.updated_on }}</small>
+                            {% if fp.product.vip %}
+                            <img src="{% static 'shopitapp/img/vip.svg' %}" alt="shopit logo"
+                                style="position: absolute; top:2px; left:2px;">
+                            {% endif %}
                         </div>
                     </div>
                 </a>
@@ -52,53 +58,63 @@
     </div>
 </section>
 
-<section>
-    <div class="container my-5">
-        <h4 class="mb-5 text-center"> All products</h4>
-        <div class="row g-3">
+<section class="container mt-5">
 
-            {% for all in allproduct %}
-            <div class="col-md-3">
-                <a href="{% url 'shopitapp:product-detail' all.pk %}" class="featured-product">
-                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
-                        <img src="{{ all.product_image1.url }}" class="card-img-top" alt="products"
-                            style="width:286px;height:180px;">
-                        <div class="card-body">
-                            <h5 class="card-text">{{all.title}}</h5>
-                            <h6 class="card-text price-color">&#8358;{{all.price}}</h6>
-                            <small class="text-muted">updated on {{ all.updated_on }}</small>
-                        </div>
-                    </div>
-                </a>
+    <h4 class="mb-3 text-center"> All Products ({{ number }}) </h4>
+
+    <div class="product-container mx-auto px-0">
+        {% for all in allproduct %}
+        <div class="row g-0 mb-3">
+            <div class="col-md-4 col-4 d-flex justify-content-center">
+                <div class="product-image bg-info d-flex">
+                    <img class="" src="{{ all.product_image1.url }}">
+                </div>
             </div>
-            {% endfor %}
-
+            <div class="col-md-8 col-8 bg-light">
+                <div class="product-content">
+                    <a href="{% url 'shopitapp:product-detail' all.pk  %}" class="product-link">
+                        <h5 class="product-tile">{{ all.title }}</h5>
+                    </a>
+                    <h6 class="product-price">&#8358;{{ all.price }}</h6>
+                    <div class="product-content-bottom">
+                        <div class="item1">
+                            <p class="location text-muted"> <i class="fal fa-map-marker-alt fa-fw"></i>Lagos, Ikeja</p>
+                        </div>
+                        <div class="item2"><small class="date-updated text-muted">Updated:
+                                {{ all.updated_on }}</small></div>
+                    </div>
+                    </div>
+                    </div>
         </div>
+        {% endfor %}
     </div>
 </section>
 
-{% if is_paginated %}
+<!-- pagination here -->
 
-{% if page_obj.has_previous %}
-<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_number }}">Previous</a>
-{% endif %}
+<section class="container text-center">
+    {% if is_paginated %}
 
-{% for num in page_obj.paginator.page_range %}
-{% if page_obj.number == num %}
-<a class="btn btn-outline-info mb-4" href="?page={{ num }}"> {{ num }} </a>
-{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-<a class="btn btn-outline-info mb-4" href="?page={{ num }}"> {{ num }} </a>
-{% endif %}
-{% endfor %}
+        {% if page_obj.has_previous %}
+        <a class="btn btn-outline-success mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-success mb-4" href="?page={{ page_obj.previous_number }}">Previous</a>
+        {% endif %}
 
-{% if page_obj.has_next %}
-<a class="btn btn-outline-info mb-4" href="{{ page_obj.next_page_number }}">Next </a>
-<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-{% endif %}
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a class="btn btn-success mb-4" href="?page={{ num }}"> {{ num }} </a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a class="btn btn-outline-success mb-4" href="?page={{ num }}"> {{ num }} </a>
+        {% endif %}
+        {% endfor %}
 
-{% endif %}
+        {% if page_obj.has_next %}
+        <a class="btn btn-outline-success mb-4" href="?page={{ page_obj.next_page_number }}">Next </a>
+        <a class="btn btn-outline-success mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
 
+    {% endif %}
+</section>
 
 <div class="subscribe-form">
     <div class="container">

@@ -6,69 +6,20 @@
 {% block content %}
 
 {% include "shopitapp/leaderboard.html" %}
-<!-- <section>
-    <div class="container my-5">
-        <h4 class="mb-5 text-center"> All Phones </h4>
-        <div class="row g-4">
-            {% for phone in phonecategory %}
-            <div class="col-md-3">
-                <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="featured-product">
-                    <div class="card mx-auto" style="width: 18rem; height: 100%;">
-                        <img src="{{ phone.product_image1.url }}" class="card-img-top img-fluid" alt=""
-                            style="width:286px;height:180px;">
-                        <div class="card-body">
-                            <h5 class="card-text">{{ phone.title }}</h5>
-                            <h6 class="card-text price-color">&#8358;{{ phone.price }}</h6>
-                            <small class="text-muted">Last updated: {{ phone.updated_on }}</small>
-
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section> -->
-
-<!-- <section>
-    <div class="container my-5">
-        <h4 class="mb-3 text-center"> All Phones </h4>
-
-        <section class="container">
-            <div class="product-container mx-auto">
-                <div class="row g-0">
-                    {% for phone in phonecategory %}
-                    <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="featured-product">
-                        <div class="prod-group d-flex my-2">
-                            <div class="col-md-4 col-4">
-                                <img src="{{ phone.product_image1.url }}" class="product-image">
-                            </div>
-                            <div class="col-md-8 col-8 product-content bg-warning">
-                                <h5 class="card-text mt-2 prodtitle">{{ phone.title }}</h5>
-                                <h5 class="card-text price-color">&#8358;{{ phone.price }}</h5>
-                                <small class="text-muted date">Last updated: {{ phone.updated_on }}</small>
-                            </div>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-
-            </div>
-        </section>
-    </div>
-</section> -->
-
 
 <section class="container">
+
+    <h4 class="mb-3 text-center"> All Phones </h4>
+
     <div class="product-container mx-auto px-0">
         {% for phone in phonecategory %}
         <div class="row g-0 mb-3">
-            <div class="col-md-4 col-4 d-flex justify-content-center">
+            <div class="col-md-4 col-4 d-flex justify-content-center bg-light">
                 <div class="product-image bg-info d-flex">
-                    <img class="img-fluid" src="{{ phone.product_image1.url }}">
+                    <img class="" src="{{ phone.product_image1.url }}">
                 </div>
             </div>
-            <div class="col-md-8 col-8 bg-danger">
+            <div class="col-md-8 col-8 bg-light">
                 <div class="product-content">
                     <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="product-link">
                         <h5 class="product-tile">{{ phone.title }}</h5>
