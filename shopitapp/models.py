@@ -1,10 +1,12 @@
 from re import T
 from django.db import models
+from django.db.models import indexes
 from django.db.models.deletion import CASCADE, PROTECT
 from django.db.models.fields import BooleanField
 from django.urls import reverse
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
+from django.contrib.postgres.indexes import GinIndex
 # Create your models here.
 
 # >>> drop down menu <<<
@@ -86,6 +88,15 @@ class BackCamera(models.Model):
     def __str__(self):
         return self.backcamera
 
+
+class Location(models.Model):
+    location = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.location
+
+
+
 # models for product
 
 
@@ -99,36 +110,40 @@ class Product(models.Model):
 
     description = models.TextField(null=True, blank=True)
 
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True)
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, null=True, blank=True)
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
     brand = models.ForeignKey(
-        Brand, on_delete=models.PROTECT, null=True, blank=True)
+        Brand, on_delete=models.CASCADE, null=True, blank=True)
 
     condition = models.ForeignKey(
-        Condition, on_delete=models.PROTECT, null=True, blank=True)
+        Condition, on_delete=models.CASCADE, null=True, blank=True)
 
     screensize = models.ForeignKey(
-        Screensize, on_delete=models.PROTECT, null=True, blank=True)
+        Screensize, on_delete=models.CASCADE, null=True, blank=True)
 
     operating_system = models.ForeignKey(
         Operating_system, on_delete=models.CASCADE, null=True, blank=True)
 
-    color = models.ForeignKey(Color, on_delete=PROTECT, null=True, blank=True)
+    color = models.ForeignKey(
+        Color, on_delete=models.CASCADE, null=True, blank=True)
 
     frontcamera = models.ForeignKey(
-        FrontCamera, on_delete=PROTECT, null=True, blank=True)
+        FrontCamera, on_delete=models.CASCADE, null=True, blank=True)
 
     backcamera = models.ForeignKey(
-        BackCamera, on_delete=PROTECT, null=True, blank=True)
+        BackCamera, on_delete=models.CASCADE, null=True, blank=True)
 
     display = models.ForeignKey(
-        Display, on_delete=PROTECT, null=True, blank=True)
+        Display, on_delete=models.CASCADE, null=True, blank=True)
 
     ram = models.ForeignKey(
-        Ram, on_delete=models.PROTECT, null=True, blank=True)
+        Ram, on_delete=models.CASCADE, null=True, blank=True)
 
     storage = models.ForeignKey(
-        Storage, on_delete=models.PROTECT, null=True, blank=True)
+        Storage, on_delete=models.CASCADE, null=True, blank=True)
 
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -146,6 +161,12 @@ class Product(models.Model):
     agent = models.ForeignKey(User, on_delete=models.CASCADE)
 
     vip = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [
+            GinIndex(name='NewGinIndex', fields=[
+                     'title'], opclasses=['gin_trgm_ops']),
+        ]
 
     def __str__(self):
         return self.title

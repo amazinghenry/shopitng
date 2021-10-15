@@ -1,39 +1,39 @@
 {% extends 'shopitapp/base.html' %}
 {% load static %}
 
-{% block title %} All Tablets {% endblock %}
+{% block title %} All Computers {% endblock %}
 
 {% block content %}
 
 {% include "shopitapp/leaderboard.html" %}
 
 <section class="container my-5">
-    <h4 class="mb-5 text-center"> All Tablets </h4>
+    <h4 class="mb-5 text-center"> All Computers </h4>
     <div class="product-container mx-auto px-0">
-        {% for tablet in tabletcategory %}
+        {% for laptop in computercategory %}
         <div class="row g-0 mb-3">
             <div class="col-md-4 col-4 d-flex justify-content-center">
                 <div class="product-image bg-info d-flex">
-                    <img class="" src="{{ tablet.product_image1.url }}">
+                    <img class="" src="{{ laptop.product_image1.url }}">
                 </div>
             </div>
             <div class="col-md-8 col-8 bg-light">
-                <a href="{% url 'shopitapp:product-detail' tablet.pk %}" class="product-link">
+                <a href="{% url 'shopitapp:product-detail' laptop.pk %}" class="product-link">
                     <div class="product-content">
-                            <h5 class="product-tile">{{ tablet.title }}</h5>
-                        <h6 class="product-price">&#8358;{{ tablet.price }}</h6>
+                        <h5 class="product-tile">{{ laptop.title }}</h5>
+                        <h6 class="product-price">&#8358;{{ laptop.price }}</h6>
                         <div class="module line-clamp">
-                            <p class="truncate-overflow">{{tablet.description}}</p>
+                            <p class="truncate-overflow">{{laptop.description}}</p>
                         </div>
                         <div class="product-content-bottom">
                             <div class="item1">
                                 <p class="location text-muted"> <i class="fal fa-map-marker-alt fa-fw"></i>Lagos, Ikeja
                                 </p>
-                                </div>
-                                <div class="item2"><small class="date-updated text-muted">Updated:
-                                        {{ tablet.updated_on }}</small></div>
-                                </div>
-                                </div>
+                            </div>
+                            <div class="item2"><small class="date-updated text-muted">Updated:
+                                    {{ laptop.updated_on }}</small></div>
+                        </div>
+                    </div>
                 </a>
             </div>
         </div>

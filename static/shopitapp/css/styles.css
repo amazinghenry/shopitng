@@ -47,12 +47,14 @@ height: 100%;
 
 .product-link {
 text-decoration: none;
-color:rgb(32, 32, 32);
+color:#000;
 }
 
-.product-link:hover{
+/* .product-link:hover{
     color: #84b660;
 }
+
+*/
 
 .date-updated{
     position: absolute;
@@ -67,6 +69,25 @@ color:rgb(32, 32, 32);
 	margin: 0;
 }
 
+.module {
+	width: 400px;
+	margin: 0 0 1em 0;
+	overflow: hidden;
+}
+
+.module p {
+	margin: 0;
+}
+
+.line-clamp {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+.truncate-overflow {
+	color: #6c757d;
+}
 
 @media only screen and (max-width: 767px){
 
@@ -76,6 +97,10 @@ color:rgb(32, 32, 32);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		font-size: medium;
+	}
+
+	.truncate-overflow {
+		display: none;
 	}
 
 	.date-updated {

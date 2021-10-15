@@ -48,7 +48,8 @@
                                         </li>
                                         <li><a class="dropdown-item"
                                                 href="{% url 'shopitapp:all_tablets' %}">Tablets</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'shopitapp:all_laptops' %}">Laptop</a>
+                                        <li><a class="dropdown-item"
+                                                href="{% url 'shopitapp:all_computers' %}">Computers</a>
                                         </li>
                                         <li><a class="dropdown-item" href="{% url 'shopitapp:all_tv' %}">Smart Tv</a>
                                         </li>
@@ -59,7 +60,7 @@
 
                                 <li><a class="nav-link btn btn-light btn-sm text-dark px-2"
                                         href="{% url 'shopitapp:product-create' %}">
-                                        <i class="fas fa-plus"></i> Create New Product</a> </li>
+                                        <i class="fas fa-plus"></i> Sell Product</a> </li>
 
                                 <li> <a class="nav-link text-warning" href="{% url 'users:profile' %}">Hello
                                         {{ user.username }}</a> </li>

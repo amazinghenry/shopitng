@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
 # Create your views here.
 
 
@@ -19,15 +20,19 @@ def search_product(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data['q']
+            # Product.objects.filter(title__trigram_similar=q).annotate(
+            #     similar=TrigramSimilarity('title', q)).order_by('-similar')
 
-            vector = SearchVector('title', weight='B') + \
-                SearchVector('category', weight='A')
-            query = SearchQuery(q)
+            #standard search
+            results = Product.objects.filter(title__icontains=q)
+            #full text search
             # results = Product.objects.filter(title__search=q)
-            # results = Product.objects.annotate(
-            #     search=SearchVector('title', 'category'),).filter(search=q)
-            results = Product.objects.annotate(
-                rank=SearchRank(vector, query)).order_by('-rank')
+            #search against multiple fields
+            #results=Product.objects.annotate(SearchVector('title', '$field'),).filter(search=q)
+            #TrigramSimilarity & TrigramDistance
+            #from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
+            # results = Product.objects.annotate(TrigramSimilarity(
+            #     'title', q).filter(similarity=0.8).order_by('-similarity'))
 
     return render(request, 'shopitapp/search.html', {'form': form, 'results': results, 'q': q})
 
@@ -74,7 +79,7 @@ class ProductDetailView(DetailView):
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
-    fields = ['title', 'description', 'price', 'category', 'brand', 'condition',
+    fields = ['title', 'description', 'location', 'price', 'category', 'brand', 'condition',
               'screensize', 'display', 'frontcamera', 'backcamera', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
 
     def form_valid(self, form):
@@ -84,7 +89,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
-    fields = ['title', 'description', 'price', 'category', 'brand', 'condition',
+    fields = ['title', 'description', 'location', 'price', 'category', 'brand', 'condition',
               'screensize', 'display', 'frontcamera', 'backcamera', 'operating_system', 'color', 'ram', 'storage', 'product_image1', 'product_image2', 'product_image3']
 
     def form_valid(self, form):
@@ -127,7 +132,7 @@ class PhoneListView(ListView):
 class ComputerListView(ListView):
     model = Product
     queryset = Product.objects.filter(category__id=3)
-    template_name = 'shopitapp/all-laptops.html'
+    template_name = 'shopitapp/all-computers.html'
     context_object_name = 'computercategory'
 
     def get_context_data(self, **kwargs):

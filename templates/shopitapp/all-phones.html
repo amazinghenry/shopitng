@@ -14,25 +14,34 @@
     <div class="product-container mx-auto px-0">
         {% for phone in phonecategory %}
         <div class="row g-0 mb-3">
-            <div class="col-md-4 col-4 d-flex justify-content-center bg-light">
+            <div class="col-md-4 col-4 d-flex justify-content-center bg-light" style="position: relative;">
                 <div class="product-image bg-info d-flex">
                     <img class="" src="{{ phone.product_image1.url }}">
                 </div>
+                {% if phone.vip %}
+                <img src="{% static 'shopitapp/img/vip.svg' %}" alt="shopit logo"
+                    style="position: absolute; top:2px; left:2px;">
+                {% endif %}
             </div>
             <div class="col-md-8 col-8 bg-light">
+                <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="product-link">
                 <div class="product-content">
-                    <a href="{% url 'shopitapp:product-detail' phone.pk %}" class="product-link">
+
                         <h5 class="product-tile">{{ phone.title }}</h5>
-                    </a>
                     <h6 class="product-price">&#8358;{{ phone.price }}</h6>
+                    <div class="module line-clamp">
+                        <p class="truncate-overflow">{{phone.description}}</p>
+                    </div>
                     <div class="product-content-bottom">
                         <div class="item1">
-                            <p class="location text-muted"> <i class="fal fa-map-marker-alt fa-fw"></i>Lagos, Ikeja</p>
+                            <p class="location text-muted"> <i
+                                    class="fal fa-map-marker-alt fa-fw"></i>{{ phone.location }}</p>
                         </div>
                         <div class="item2"><small class="date-updated text-muted">Updated:
                                 {{ phone.updated_on }}</small></div>
                     </div>
                 </div>
+            </a>
             </div>
         </div>
         {% endfor %}

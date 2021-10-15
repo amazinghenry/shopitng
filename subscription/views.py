@@ -13,7 +13,7 @@ def subscribe(request):
         send_mail('New subcription email from Shopit',
                   email,
                   settings.EMAIL_HOST_USER,
-                  ['henryadodo@gmail.com'],
+                  ['henryadodo@zohomail.com'],
                   fail_silently=False)
         Subscribers.objects.create(subscribers_email=email)
         messages.info(request, 'You have been Subscribed!')
@@ -21,3 +21,14 @@ def subscribe(request):
     else:
         messages.info(request, 'Unsuccessful')
         return redirect('/')
+
+
+# def contactagent(request):
+#     if request.method == 'POST':
+#         message = request.POST['message']
+#         send_mail('New Message from:',
+#                   message,
+#                   '',
+#                   ['{}'],
+#                   fail_silently=False,
+#                   )
