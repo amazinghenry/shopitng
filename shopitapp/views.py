@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.shortcuts import get_object_or_404, render
 from .models import *
 from shopitapp.forms import SearchForm
@@ -10,34 +11,41 @@ from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
 
 
 # >>> Product Search <<<
-def search_product(request):
+def search_result(request):
     form = SearchForm
-
-    results = []
-    q = None
+    result = []
+    q = 0
 
     if 'q' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
             q = form.cleaned_data['q']
-            # Product.objects.filter(title__trigram_similar=q).annotate(
-            #     similar=TrigramSimilarity('title', q)).order_by('-similar')
 
-            #standard search
-            results = Product.objects.filter(title__icontains=q)
-            #full text search
-            # results = Product.objects.filter(title__search=q)
-            #search against multiple fields
-            #results=Product.objects.annotate(SearchVector('title', '$field'),).filter(search=q)
-            #TrigramSimilarity & TrigramDistance
-            #from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
-            # results = Product.objects.annotate(TrigramSimilarity(
-            #     'title', q).filter(similarity=0.8).order_by('-similarity'))
+        # result = Product.objects.filter(title__icontains=q)
+        result = Product.objects.filter(title__icontains=q)
 
-    return render(request, 'shopitapp/search.html', {'form': form, 'results': results, 'q': q})
+    return render(request, 'shopitapp/search_result.html', {'form': form, 'searchresult': result, 'q': q})
+
+
+#
 
 # >>> This is the product details function, when the user clicks any product,
 # this function brings out the details of the clicked product, dynamically <<<
+
+# class SearchResultsList(ListView):
+#     model = Product
+#     template_name = 'shopitapp/search_result.html'
+
+#     def get_queryset(self, *args, **kwargs):
+#         searchresult = super().get_queryset(*args, **kwargs)
+#         query = self.request.GET.get('q')
+#         if query:
+#             return searchresult.filter(
+#                 title__icontains=query)
+#         return searchresult
+
+
+
 
 
 class ProductListView(ListView):
@@ -131,7 +139,7 @@ class PhoneListView(ListView):
 
 class ComputerListView(ListView):
     model = Product
-    queryset = Product.objects.filter(category__id=3)
+    queryset = Product.objects.filter(category__id=3).order_by('-updated_on')
     template_name = 'shopitapp/all-computers.html'
     context_object_name = 'computercategory'
 

@@ -1,9 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.db.models.fields import CharField
 
 # Create your models here.
 
+
+class Address(models.Model):
+    address = models.CharField(max_length=150)
+    city = models.CharField(max_length=150)
+    state = models.CharField(max_length=150)
 
 
 

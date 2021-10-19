@@ -37,7 +37,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ALLOWED_HOSTS = []
 
-
+DEFAULT_FROM_EMAIL = 'henryadodo@zohomail.com'
 # Application definition
 
 INSTALLED_APPS = [

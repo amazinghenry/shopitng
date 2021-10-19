@@ -136,7 +136,7 @@ body {
   #content-wrap {
 	padding-bottom: 2.5rem;    /* Footer height */
   }
-
+/* search style */
 .search_area{
     background-image: url('../img/black-background.jpg');
     background-repeat:repeat;
@@ -149,6 +149,50 @@ body {
     align-items: center;
     height: 40vh;
 }
+.searchcontainer {
+	margin: 20px auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.searchbar {
+	padding: 10px;
+	width: 500px;
+	border: none;
+}
+
+.searchbutton {
+	background-color: #84b660;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	float: right;
+}
+
+.searchbar:focus {
+	border-style: none !important;
+	outline: none;
+
+}
+
+@media screen and (max-width: 600px) {
+	.searchbutton {
+		float: right;
+	}
+
+	.searchbar {
+		max-width: 250px;
+	}
+}
+
+
+
+
+
+/* search style */
+
 .form-at{
     display: flex;
     flex-direction: row;

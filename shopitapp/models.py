@@ -6,6 +6,7 @@ from django.db.models.fields import BooleanField
 from django.urls import reverse
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
 # Create your models here.
 
@@ -162,10 +163,11 @@ class Product(models.Model):
 
     vip = models.BooleanField(default=False)
 
+    search_vector = SearchVectorField(null=True)
+
     class Meta:
         indexes = [
-            GinIndex(name='NewGinIndex', fields=[
-                     'title'], opclasses=['gin_trgm_ops']),
+            GinIndex(name='NewGinIndex', fields=['title']),
         ]
 
     def __str__(self):

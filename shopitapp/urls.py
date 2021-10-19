@@ -20,5 +20,6 @@ urlpatterns = [
          ProductDeleteView.as_view(), name='product-delete'),
 
     path('product/new/', ProductCreateView.as_view(), name='product-create'),
-    path('search/', views.search_product, name='search_product'),
+    #     path('search/', SearchResultsList.as_view(), name='search-result'),
+    path('search/', views.search_result, name='search_result'),
 ]
